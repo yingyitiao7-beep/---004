@@ -183,15 +183,15 @@ fn jisuanqi(input:&str) -> Result<f64, String> {
         return Err("错误".to_string());
     }
 
-    if ku_01.len() %2 == 0{
+    if ku_01.len() %2 == 0{//这是检查代码的完整性的，在算式中现在只有奇数是成立的
         return Err("表达式错误".to_string());
     }
 
     let mut shuzi:Vec<f64> = Vec::new();
     let mut op:Vec<&str> = Vec::new();
 
-    for (zhishu,ku_02) in ku_01.iter().enumerate() {
-        if zhishu %2 == 0 {
+    for (zhishu,ku_02) in ku_01.iter().enumerate() {//开始遍历，iter会遍历每一个元素，enumerate会同时给我们 位置+数据
+        if zhishu %2 == 0 {//这是判断数字位的，偶数都是数字位
             match ku_02.parse() {
                 Ok(number) => shuzi.push(number),
                 Err(_) => {
@@ -211,19 +211,19 @@ fn jisuanqi(input:&str) -> Result<f64, String> {
 
             if op[zhishu] == "*"{
                 result = shuzi[zhishu] * shuzi[zhishu + 1];
-    } else {
-        if shuzi[zhishu + 1] == 0.0{
-            return Err("除数不为0".to_string());
-        }
+            } else {
+                if shuzi[zhishu + 1] == 0.0{
+                    return Err("除数不为0".to_string());
+                }
 
 
 
         result = shuzi[zhishu] / shuzi[zhishu + 1];
-    }
+    }//判断优先级
 
     shuzi[zhishu] =  result;
     shuzi.remove(zhishu + 1);
-    op.remove(zhishu);
+    op.remove(zhishu);//开始修改整合
     } else {
         zhishu += 1;
     }
