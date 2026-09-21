@@ -439,7 +439,7 @@ fn jisuan_basic(ku_1:&[String]) -> Result<f64, CalcError> {
     Ok(result)
 }*///第六版 
 
-use std::io;
+/*use std::io;
 use std::fmt;
 
 #[derive(Debug)]
@@ -648,9 +648,9 @@ fn calculate_basic(input: &str) -> Result<f64, CalcError> {
     }
 
     Ok(current_number)
-}//第六版02
+}*///第六版02
 
-/*use std::fmt;
+use std::fmt;
 use std::io;
 use std::iter::Peekable;
 use std::str::Chars;
@@ -1071,4 +1071,4 @@ impl<'a> Parser<'a> {
             }
         }
     }
-}*///第六版03
+}//第六版03
