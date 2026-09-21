@@ -737,10 +737,6 @@ fn main() {
 }
 
 
-// ========================================
-// 计算入口
-// ========================================
-
 fn calculate(input: &str) -> Result<f64, CalcError> {
     if input.trim().is_empty() {
         return Err(CalcError::InvalidFormat);
@@ -752,8 +748,6 @@ fn calculate(input: &str) -> Result<f64, CalcError> {
 
     parser.skip_spaces();
 
-    // 如果计算结束以后还有东西
-    // 说明表达式格式有问题
     if let Some(ch) = parser.chars.peek().copied() {
         if ch == ')' {
             return Err(CalcError::MismatchedParentheses);
@@ -772,10 +766,6 @@ fn calculate(input: &str) -> Result<f64, CalcError> {
 }
 
 
-// ========================================
-// Parser：表达式解析器
-// ========================================
-
 struct Parser<'a> {
     chars: Peekable<Chars<'a>>,
 }
@@ -789,11 +779,6 @@ impl<'a> Parser<'a> {
         }
     }
 
-
-    // ========================================
-    // 跳过空格
-    // ========================================
-
     fn skip_spaces(&mut self) {
         while let Some(ch) = self.chars.peek() {
             if ch.is_whitespace() {
@@ -803,11 +788,6 @@ impl<'a> Parser<'a> {
             }
         }
     }
-
-
-    // ========================================
-    // 处理 + -
-    // ========================================
 
     fn parse_expression(&mut self) -> Result<f64, CalcError> {
 
@@ -842,11 +822,6 @@ impl<'a> Parser<'a> {
 
         Ok(result)
     }
-
-
-    // ========================================
-    // 处理 * /
-    // ========================================
 
     fn parse_term(&mut self) -> Result<f64, CalcError> {
 
@@ -909,11 +884,6 @@ impl<'a> Parser<'a> {
         }
     }
 
-
-    // ========================================
-    // 处理 ^ 次方
-    // ========================================
-
     fn parse_power(&mut self) -> Result<f64, CalcError> {
 
         let left = self.parse_primary()?;
@@ -939,19 +909,12 @@ impl<'a> Parser<'a> {
     }
 
 
-    // ========================================
-    // 处理数字和括号
-    // ========================================
-
     fn parse_primary(&mut self) -> Result<f64, CalcError> {
 
         self.skip_spaces();
 
         match self.chars.peek().copied() {
 
-            // ----------------------------
-            // 左括号
-            // ----------------------------
 
             Some('(') => {
 
@@ -973,37 +936,17 @@ impl<'a> Parser<'a> {
                 }
             }
 
-
-            // ----------------------------
-            // 数字
-            // ----------------------------
-
             Some(ch) if ch.is_ascii_digit() || ch == '.' => {
                 self.parse_number()
             }
-
-
-            // ----------------------------
-            // 右括号
-            // ----------------------------
 
             Some(')') => {
                 Err(CalcError::MismatchedParentheses)
             }
 
-
-            // ----------------------------
-            // 运算符位置错误
-            // ----------------------------
-
             Some(ch) if "+-* /^".contains(ch) => {
                 Err(CalcError::ExpressionFormatError)
             }
-
-
-            // ----------------------------
-            // 其他字符
-            // ----------------------------
 
             Some(ch) => {
 
@@ -1015,11 +958,6 @@ impl<'a> Parser<'a> {
 
                 Err(CalcError::NotNumber(value))
             }
-
-
-            // ----------------------------
-            // 什么都没有
-            // ----------------------------
 
             None => {
                 Err(CalcError::InvalidFormat)
